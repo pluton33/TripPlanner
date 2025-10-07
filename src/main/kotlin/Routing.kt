@@ -1,5 +1,6 @@
 package com.sp
 
+import com.sp.model.TripsRepository
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -12,6 +13,10 @@ fun Application.configureRouting() {
     routing {
         get("/") {
             call.respondText("Hello World!")
+        }
+        get("/trips") {
+            val trips = TripsRepository.allTrips()
+            call.respondText(trips.toString())
         }
     }
 }
