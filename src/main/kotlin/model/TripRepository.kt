@@ -18,4 +18,8 @@ object TripsRepository {
         }
         trips.add(trip)
     }
+
+    fun removeTrip(name: String): Boolean {
+        return trips.removeIf { it.name  == name }
+    }
 }
