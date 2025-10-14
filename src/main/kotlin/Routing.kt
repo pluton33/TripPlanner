@@ -23,7 +23,7 @@ fun Application.configureRouting() {
         route("/trips"){
             get() {
                 val trips = TripsRepository.allTrips()
-                call.respondText(trips.toString())
+                call.respond(trips)
             }
             post() {
                 val trip = call.receive<Trip>()
@@ -37,7 +37,7 @@ fun Application.configureRouting() {
                     TripsRepository.addTrip(
                         trip
                     )
-                    call.respond(HttpStatusCode.NoContent)
+                    call.respond(HttpStatusCode.Created)
                 } catch (exception: IllegalStateException) {
                     call.respond(HttpStatusCode.BadRequest)
                 }

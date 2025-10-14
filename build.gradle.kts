@@ -21,4 +21,6 @@ dependencies {
     implementation(libs.ktor.server.config.yaml)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation("com.jayway.jsonpath:json-path:2.9.0")
+    testImplementation("io.ktor:ktor-client-content-negotiation:2.1.1")
 }
