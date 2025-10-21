@@ -1,25 +1,27 @@
+/*
 package com.sp.model
 
-object TripsRepository {
+class TripRepositoryImpl : TripRepository{
     val trips = mutableListOf(
         Trip("zakopane", "rysy"),
         Trip("Nowy jork", "World trade center")
     )
 
-    fun allTrips(): List<Trip> = trips
+    override fun allTrips(): List<Trip> = trips
 
-    fun tripByName(name: String) =trips.find {
+    override fun tripByName(name: String) =trips.find {
         it.name.equals(name, ignoreCase = true)
     }
 
-    fun addTrip(trip: Trip) {
+    override fun addTrip(trip: Trip) {
         if(tripByName(trip.name) != null) {
             throw IllegalStateException("Cannot duplicate trip names!")
         }
         trips.add(trip)
     }
 
-    fun removeTrip(name: String): Boolean {
+    override fun removeTrip(name: String): Boolean {
         return trips.removeIf { it.name  == name }
     }
 }
+*/

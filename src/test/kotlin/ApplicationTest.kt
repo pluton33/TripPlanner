@@ -2,6 +2,7 @@ package com.sp
 
 import com.jayway.jsonpath.DocumentContext
 import com.jayway.jsonpath.JsonPath
+import com.sp.db.TripTable
 import com.sp.model.Trip
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -12,6 +13,11 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.json
 
 import io.ktor.server.testing.*
+import kotlinx.coroutines.runBlocking
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -69,7 +75,13 @@ class ApplicationTest {
         assertContains(taskNames, "testowe miasto")
 
     }
-
+    @BeforeTest
+    fun setupDatabase() = runBlocking {
+        Database.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver")
+        transaction {
+            SchemaUtils.create(TripTable)
+        }
+    }
     @Test
     fun removeTripsTest() = testApplication {
         application {

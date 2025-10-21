@@ -1,7 +1,8 @@
 package com.sp
 
 import com.sp.model.Trip
-import com.sp.model.TripsRepository
+import com.sp.model.TripRepository
+
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.http.content.staticResources
@@ -14,7 +15,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
-fun Application.configureRouting() {
+fun Application.configureRouting(tripsRepository: TripRepository) {
     routing {
         staticResources("/resources", "static")
         get("/") {
@@ -22,7 +23,7 @@ fun Application.configureRouting() {
         }
         route("/trips"){
             get() {
-                val trips = TripsRepository.allTrips()
+                val trips = tripsRepository.allTrips()
                 call.respond(trips)
             }
             post() {
@@ -34,7 +35,7 @@ fun Application.configureRouting() {
                     return@post
                 }
                 try {
-                    TripsRepository.addTrip(
+                    tripsRepository.addTrip(
                         trip
                     )
                     call.respond(HttpStatusCode.Created)
@@ -48,7 +49,7 @@ fun Application.configureRouting() {
                     call.respond(HttpStatusCode.BadRequest)
                     return@delete
                 }
-                if(TripsRepository.removeTrip(name)) {
+                if(tripsRepository.removeTrip(name)) {
                     call.respond(HttpStatusCode.NoContent)
                 } else {
                     call.respond(HttpStatusCode.NotFound)
