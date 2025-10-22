@@ -4,8 +4,8 @@ import com.sp.db.DAOToModel
 import com.sp.db.TripDAO
 import com.sp.db.TripTable
 import com.sp.db.suspendTransaction
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.deleteWhere
 
 class PostgresTripRepository : TripRepository {
     override suspend fun allTrips(): List<Trip> {

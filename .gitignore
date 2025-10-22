@@ -5,3 +5,4 @@ build/
 *.iml
 .DS_Store
 .env
+/src/main/kotlin/com/sp/db/migration/
