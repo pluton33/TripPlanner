@@ -8,8 +8,8 @@ import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 
 class PostgresTripRepository : TripRepository {
-    override suspend fun allTrips(): List<Trip> {
-        return suspendTransaction { TripDAO.all().map( ::DAOToModel) }
+    override suspend fun allTrips(): GetTripsResponse {
+        return suspendTransaction { GetTripsResponse(TripDAO.all().map( ::DAOToModel)) }
     }
 
     override suspend fun tripByName(name: String): Trip? {

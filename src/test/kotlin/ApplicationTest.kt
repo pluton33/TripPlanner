@@ -58,8 +58,8 @@ class ApplicationTest {
         val trip = Trip("testowe miasto", "testowy opis")
         val response1 = client.post("/trips") {
             header(
-                HttpHeaders.ContentType,
-                ContentType.Application.Json
+                key = HttpHeaders.ContentType,
+                value = ContentType.Application.Json
             )
             setBody(trip)
         }

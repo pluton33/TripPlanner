@@ -13,6 +13,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.experimental.newSuspendedTrans
 object TripTable : IntIdTable() {
     val name = varchar("name", 50)
     val description = varchar("description", 50)
+    val stop : StopPlace
 //    val stopPlace =
 }
 
