@@ -27,11 +27,11 @@ fun Application.configureDatabases() {
     )
 
     transaction(database) {
-        MigrationUtils.generateMigrationScript(
-            TripTable, StopPlaceTable,
-            scriptDirectory = "src/main/kotlin/com/sp/db/migration",
-            scriptName = "V5",
-        )
+//        MigrationUtils.generateMigrationScript(
+//            TripTable, StopPlaceTable,
+//            scriptDirectory = "src/main/kotlin/com/sp/db/migration",
+//            scriptName = "V5",
+//        )
         val flyway = Flyway.configure()
             .dataSource(DB_URL, DB_USER, DB_PASSWORD)
 // .dataSource("$DB_URL;DB_CLOSE_DELAY=-1", DB_USER, DB_PASSWORD)

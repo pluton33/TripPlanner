@@ -38,7 +38,7 @@ class StopPlaceDAO(stopPlaceId: EntityID<Int>) : IntEntity(stopPlaceId) {
     companion object : IntEntityClass<StopPlaceDAO>(StopPlaceTable)
     var name by StopPlaceTable.name
     var description by StopPlaceTable.description
-    var tripId by TripDAO referencedOn StopPlaceTable.tripId
+    var trip by TripDAO referencedOn StopPlaceTable.tripId //trip bo odnosi się do całej tabeli Trip
 }
 
 suspend fun <T> suspendTransaction(block: Transaction.() -> T): T =
