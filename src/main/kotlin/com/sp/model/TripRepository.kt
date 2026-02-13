@@ -1,5 +1,7 @@
 package com.sp.model
 
+import com.sp.model.data.Trip
+
 interface TripRepository {
     suspend fun allTrips() : GetTripsResponse
     suspend fun tripByName(name: String) : Trip?

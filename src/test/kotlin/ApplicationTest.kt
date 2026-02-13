@@ -3,7 +3,7 @@ package com.sp
 import com.jayway.jsonpath.DocumentContext
 import com.jayway.jsonpath.JsonPath
 import com.sp.db.TripTable
-import com.sp.model.Trip
+import com.sp.model.data.Trip
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

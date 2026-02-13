@@ -1,15 +1,16 @@
 package com.sp.model
 
-import com.sp.db.DAOToModel
+import com.sp.db.TripDAOToModel
 import com.sp.db.TripDAO
 import com.sp.db.TripTable
 import com.sp.db.suspendTransaction
+import com.sp.model.data.Trip
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 
 class PostgresTripRepository : TripRepository {
     override suspend fun allTrips(): GetTripsResponse {
-        return suspendTransaction { GetTripsResponse(TripDAO.all().map( ::DAOToModel)) }
+        return suspendTransaction { GetTripsResponse(TripDAO.all().map( ::TripDAOToModel)) }
     }
 
     override suspend fun tripByName(name: String): Trip? {
@@ -17,7 +18,7 @@ class PostgresTripRepository : TripRepository {
             TripDAO
                 .find { (TripTable.name eq name) }
                 .limit(1)
-                .map(::DAOToModel)
+                .map(::TripDAOToModel)
                 .firstOrNull()
         }
     }

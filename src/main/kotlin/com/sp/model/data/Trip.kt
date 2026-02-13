@@ -3,8 +3,9 @@ package com.sp.model.data
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class StopPlace (
+data class Trip(
     val id: Int,
     val name: String,
-    val description: String?
+    val description: String,
+    val stopPlaces: List<StopPlace>
 )

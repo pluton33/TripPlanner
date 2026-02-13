@@ -1,6 +1,6 @@
 package com.sp
 
-import com.sp.model.Trip
+import com.sp.model.data.Trip
 import com.sp.model.TripRepository
 
 import io.ktor.http.HttpStatusCode
