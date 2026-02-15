@@ -38,7 +38,7 @@ class StopPlaceDAO(stopPlaceId: EntityID<Int>) : IntEntity(stopPlaceId) {
     companion object : IntEntityClass<StopPlaceDAO>(StopPlaceTable)
     var name by StopPlaceTable.name
     var description by StopPlaceTable.description
-    var trip by TripDAO referencedOn StopPlaceTable.tripId //trip bo odnosi się do całej tabeli Trip
+    var trip by TripDAO referencedOn StopPlaceTable.tripId //trip bo exposed zamienia referencje id na obiekt
 }
 
 suspend fun <T> suspendTransaction(block: Transaction.() -> T): T =
@@ -50,3 +50,9 @@ fun TripDAOToModel(dao: TripDAO) = Trip (
     description = dao.description,
     stopPlaces = dao.stopPlaces.map { StopPlace(it.id.value, it.name, it.description) },
 )
+
+//fun StopPlace.toModel() = StopPlace(
+//    id = this.id,
+//    name = this.name,
+//    description = this.description,
+//)
