@@ -1,8 +1,10 @@
 package com.sp
 
+import com.sp.db.StopPlaceTable
 import com.sp.db.TripDAO
 import com.sp.db.TripTable
-import com.sp.model.Trip
+import com.sp.model.data.StopPlace
+import com.sp.model.data.Trip
 import com.sp.utils.Constants.DB_PASSWORD
 import com.sp.utils.Constants.DB_URL
 import com.sp.utils.Constants.DB_USER
@@ -25,22 +27,22 @@ fun Application.configureDatabases() {
     )
 
     transaction(database) {
-        MigrationUtils.generateMigrationScript(
-            TripTable,
-            scriptDirectory = "src/main/kotlin/com/sp/db/migration",
-            scriptName = "V1__init",
-        )
+//        MigrationUtils.generateMigrationScript(
+//            TripTable, StopPlaceTable,
+//            scriptDirectory = "src/main/kotlin/com/sp/db/migration",
+//            scriptName = "V5",
+//        )
         val flyway = Flyway.configure()
             .dataSource(DB_URL, DB_USER, DB_PASSWORD)
-//            .dataSource("$DB_URL;DB_CLOSE_DELAY=-1", DB_USER, DB_PASSWORD)
+// .dataSource("$DB_URL;DB_CLOSE_DELAY=-1", DB_USER, DB_PASSWORD)
             .locations("filesystem:src/main/kotlin/com/sp/db/migration")
             .baselineOnMigrate(true)
             .load()
             .migrate()
-//        val statements = MigrationUtils.statementsRequiredForDatabaseMigration(TripTable)
-//        println(statements.toString())
-//        statements.forEach { stmt ->
-//            exec(stmt)
-//        }
+// val statements = MigrationUtils.statementsRequiredForDatabaseMigration(TripTable)
+// println(statements.toString())
+// statements.forEach { stmt ->
+// exec(stmt)
+// }
     }
 }

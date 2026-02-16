@@ -1,10 +1,12 @@
 package com.sp
 
-import com.sp.model.Trip
+import com.sp.model.data.Trip
 import com.sp.model.TripRepository
+import com.sp.model.data.StopPlace
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
+import io.ktor.server.application.log
 import io.ktor.server.http.content.staticResources
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -41,6 +43,23 @@ fun Application.configureRouting(tripsRepository: TripRepository) {
                     call.respond(HttpStatusCode.Created)
                 } catch (exception: IllegalStateException) {
                     call.respond(HttpStatusCode.BadRequest)
+                }
+            }
+            route("/{tripId}"){
+                post ("/addStop") {
+                    val tripId = call.parameters["tripId"]?.toIntOrNull()
+                    val stopPlace = call.receive<StopPlace>()
+                    if (tripId == null) {
+                        call.respond(HttpStatusCode.BadRequest)
+                        return@post
+                    }
+                    log.debug("Adding trip stop: $tripId")
+                    try {
+                        tripsRepository.addStop(tripId, stopPlace)
+                        call.respond(HttpStatusCode.Created)
+                    } catch (exception: IllegalStateException) { //TODO zająć się poprawnym rzucaniem wyjątków
+                        call.respond(HttpStatusCode.BadRequest)
+                    }
                 }
             }
             delete("/{tripName}") {
