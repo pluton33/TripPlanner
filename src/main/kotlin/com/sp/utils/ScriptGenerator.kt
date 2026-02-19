@@ -2,6 +2,7 @@ package com.sp.utils
 
 import com.sp.db.StopPlaceTable
 import com.sp.db.TripTable
+import com.sp.db.UserTable
 import com.sp.utils.Constants.DB_PASSWORD
 import com.sp.utils.Constants.DB_URL
 import com.sp.utils.Constants.DB_USER
@@ -14,7 +15,7 @@ fun main() {
 
     transaction {
 
-        val statements = MigrationUtils.statementsRequiredForDatabaseMigration(TripTable, StopPlaceTable)
+        val statements = MigrationUtils.statementsRequiredForDatabaseMigration(TripTable, StopPlaceTable, UserTable)
 
         if (statements.isEmpty()) {
             println("Brak zmian w strukturze tabel.")

@@ -11,8 +11,10 @@ import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 
 class PostgresTripRepository : TripRepository {
-    override suspend fun allTrips(): GetTripsResponse {
-        return suspendTransaction { GetTripsResponse(TripDAO.all().map( ::TripDAOToModel)) }
+    override suspend fun allTrips(userId: Int): GetTripsResponse {
+        return suspendTransaction { GetTripsResponse(TripDAO
+            .find { TripTable.userId eq userId }
+            .map { TripDAOToModel(it) }) }
     }
 
 
@@ -21,7 +23,7 @@ class PostgresTripRepository : TripRepository {
             TripDAO
                 .find { (TripTable.name eq name) }
                 .limit(1)
-                .map(::TripDAOToModel)
+                .map(::TripDAOToModel) //to samo co .map{TripDAOToModel(it)}
                 .firstOrNull()
         }
     }
