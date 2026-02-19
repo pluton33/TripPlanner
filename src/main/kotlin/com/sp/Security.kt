@@ -3,7 +3,7 @@ package com.sp
 import com.sp.db.UserDAO
 import com.sp.db.UserTable
 import com.sp.db.suspendTransaction
-import com.sp.model.data.User
+import com.sp.user.User
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.Authentication
@@ -23,7 +23,8 @@ fun Application.configureSecurity() {
             validate { credentials ->
                 suspendTransaction {
                     val user = UserDAO.find { UserTable.login eq credentials.name }.singleOrNull()
-                    println("user.name: ${ user?.login }, credentials.name: ${ credentials.name }")
+                    println("user.name: ${ user?.login }, credentials.name: ${ credentials.name }\n" +
+                            " credentials.password: ${ credentials.password }")
                     if (credentials.name == user?.login && credentials.password == user.password) {
                         UserIdPrincipal(user.id.value.toString())
                     } else {

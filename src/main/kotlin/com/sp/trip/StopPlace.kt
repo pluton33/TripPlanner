@@ -1,4 +1,4 @@
-package com.sp.model.data
+package com.sp.trip
 
 import kotlinx.serialization.Serializable
 

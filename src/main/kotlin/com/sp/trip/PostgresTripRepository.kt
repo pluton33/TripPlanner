@@ -1,12 +1,10 @@
-package com.sp.model
+package com.sp.trip
 
 import com.sp.db.StopPlaceDAO
 import com.sp.db.TripDAOToModel
 import com.sp.db.TripDAO
 import com.sp.db.TripTable
 import com.sp.db.suspendTransaction
-import com.sp.model.data.StopPlace
-import com.sp.model.data.Trip
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 

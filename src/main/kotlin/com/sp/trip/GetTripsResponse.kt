@@ -1,6 +1,5 @@
-package com.sp.model
+package com.sp.trip
 
-import com.sp.model.data.Trip
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,8 +1,8 @@
 package com.sp.db
 
-import com.sp.model.data.StopPlace
-import com.sp.model.data.Trip
-import com.sp.model.data.User
+import com.sp.trip.StopPlace
+import com.sp.trip.Trip
+import com.sp.user.User
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.v1.core.ReferenceOption
 import org.jetbrains.exposed.v1.core.Transaction
@@ -76,6 +76,7 @@ fun UserDAOToModel(user: UserDAO) = User(
     username = user.name,
     login = user.login,
     password = user.password,
+    //TODO nie używać lazy loading
     trips = user.trips.map { tripDAO ->
         Trip(tripDAO.id.value, tripDAO.name, tripDAO.description, tripDAO.stopPlaces.map { stopPlaceDAO ->
             StopPlace(stopPlaceDAO.id.value, stopPlaceDAO.name, stopPlaceDAO.description)

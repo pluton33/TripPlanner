@@ -1,8 +1,8 @@
 package com.sp
 
-import com.sp.model.data.Trip
-import com.sp.model.TripRepository
-import com.sp.model.data.StopPlace
+import com.sp.trip.Trip
+import com.sp.trip.TripRepository
+import com.sp.trip.StopPlace
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application

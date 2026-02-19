@@ -1,7 +1,4 @@
-package com.sp.model
-
-import com.sp.model.data.StopPlace
-import com.sp.model.data.Trip
+package com.sp.trip
 
 interface TripRepository {
     suspend fun allTrips(userId: Int) : GetTripsResponse

@@ -1,10 +1,5 @@
 package com.sp
 
-import com.sp.db.StopPlaceTable
-import com.sp.db.TripDAO
-import com.sp.db.TripTable
-import com.sp.model.data.StopPlace
-import com.sp.model.data.Trip
 import com.sp.utils.Constants.DB_PASSWORD
 import com.sp.utils.Constants.DB_URL
 import com.sp.utils.Constants.DB_USER
@@ -12,10 +7,7 @@ import io.ktor.server.application.Application
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.v1.core.ExperimentalDatabaseMigrationApi
 import org.jetbrains.exposed.v1.jdbc.Database
-import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
-import org.jetbrains.exposed.v1.migration.jdbc.MigrationUtils
-import java.io.File
 
 
 @OptIn(ExperimentalDatabaseMigrationApi::class)

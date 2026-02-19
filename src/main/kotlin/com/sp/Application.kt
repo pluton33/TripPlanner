@@ -1,6 +1,6 @@
 package com.sp
 
-import com.sp.model.PostgresTripRepository
+import com.sp.trip.PostgresTripRepository
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
