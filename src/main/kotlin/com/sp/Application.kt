@@ -1,6 +1,8 @@
 package com.sp
 
+import com.sp.routing.configureRouting
 import com.sp.trip.PostgresTripRepository
+import com.sp.user.PostgresUserRepository
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -9,8 +11,9 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     val tripRepository = PostgresTripRepository()
+    val userRepository = PostgresUserRepository()
     configureSerialization()
     configureSecurity()
-    configureRouting(tripRepository)
+    configureRouting(tripRepository, userRepository)
     configureDatabases()
 }

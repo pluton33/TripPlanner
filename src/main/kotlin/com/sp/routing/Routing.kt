@@ -1,8 +1,9 @@
-package com.sp
+package com.sp.routing
 
 import com.sp.trip.Trip
 import com.sp.trip.TripRepository
 import com.sp.trip.StopPlace
+import com.sp.user.UserRepository
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
@@ -20,7 +21,10 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
-fun Application.configureRouting(tripsRepository: TripRepository) {
+fun Application.configureRouting(
+    tripsRepository: TripRepository,
+    userRepository: UserRepository
+) {
     routing {
         staticResources("/resources", "static")
         get("/") {
@@ -85,5 +89,8 @@ fun Application.configureRouting(tripsRepository: TripRepository) {
                 }
             }
         }
+        tripRoutes(tripsRepository)
+
+        this.userRoutes(userRepository)
     }
 }
