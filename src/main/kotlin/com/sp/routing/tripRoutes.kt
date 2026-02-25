@@ -11,7 +11,6 @@ import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
-import io.ktor.server.routing.application
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -32,15 +31,18 @@ fun Route.tripRoutes(tripRepository: TripRepository) {
             }
             post() {
                 val trip = call.receive<Trip>()
-
-
+                val principalId = call.principal<UserIdPrincipal>()?.name?.toIntOrNull()
+                if(principalId == null) {
+                    return@post call.respond(HttpStatusCode.Unauthorized)
+                }
                 if (trip.name.isEmpty()) {
                     call.respond(HttpStatusCode.BadRequest)
                     return@post
                 }
                 try {
                     tripRepository.addTrip(
-                        trip
+                        userId = principalId,
+                        trip = trip
                     )
                     call.respond(HttpStatusCode.Created)
                 } catch (exception: IllegalStateException) {
@@ -49,28 +51,41 @@ fun Route.tripRoutes(tripRepository: TripRepository) {
             }
             route("/{tripId}") {
                 post("/addStop") {
+                    val principalId = call.principal<UserIdPrincipal>()?.name?.toIntOrNull()
                     val tripId = call.parameters["tripId"]?.toIntOrNull()
                     val stopPlace = call.receive<StopPlace>()
+                    println(stopPlace)
+                    if (principalId == null) {
+                        call.respond(HttpStatusCode.Unauthorized)
+                        return@post
+                    }
+                    println("TripId of added stopPlace:$tripId")
                     if (tripId == null) {
                         call.respond(HttpStatusCode.BadRequest)
                         return@post
                     }
                     call.application.log.debug("Adding trip stop: $tripId")
                     try {
-                        tripRepository.addStop(tripId, stopPlace)
+                        tripRepository.addStop(principalId, tripId, stopPlace)
                         call.respond(HttpStatusCode.Created)
                     } catch (exception: IllegalStateException) { //TODO zająć się poprawnym rzucaniem wyjątków
                         call.respond(HttpStatusCode.BadRequest)
+                        println(exception.message.toString())
                     }
                 }
             }
             delete("/{tripName}") {
-                val name = call.parameters["tripName"]
-                if (name == null) {
+                val tripId = call.parameters["tripName"]?.toIntOrNull()
+                val principalId = call.principal<UserIdPrincipal>()?.name?.toIntOrNull()
+                if(principalId == null) {
+                    call.respond(HttpStatusCode.Unauthorized)
+                    return@delete
+                }
+                if (tripId == null) {
                     call.respond(HttpStatusCode.BadRequest)
                     return@delete
                 }
-                if (tripRepository.removeTrip(name)) {
+                if (tripRepository.removeTrip(principalId, tripId)) {
                     call.respond(HttpStatusCode.NoContent)
                 } else {
                     call.respond(HttpStatusCode.NotFound)

@@ -39,7 +39,7 @@ class TripDAO(tripId: EntityID<Int>) : IntEntity(tripId) {
     var name by TripTable.name
     var description by TripTable.description
     val stopPlaces by StopPlaceDAO referrersOn StopPlaceTable.tripId
-    val user by UserDAO referencedOn TripTable.userId
+    var user by UserDAO referencedOn TripTable.userId
 //    var stopPlace
 }
 

@@ -30,65 +30,6 @@ fun Application.configureRouting(
         get("/") {
             call.respondText("Hello World!")
         }
-        authenticate("basic-auth") {
-            route("/trips") {
-                get() {
-                    val principal = call.principal<UserIdPrincipal>()?.name?.toIntOrNull()
-                    if(principal == null) {
-                        call.respond(HttpStatusCode.Unauthorized)
-                        return@get
-                    }
-                    val trips = tripsRepository.allTrips(principal)
-                    call.respond(trips)
-                }
-                post() {
-                    val trip = call.receive<Trip>()
-
-
-                    if (trip.name.isEmpty()) {
-                        call.respond(HttpStatusCode.BadRequest)
-                        return@post
-                    }
-                    try {
-                        tripsRepository.addTrip(
-                            trip
-                        )
-                        call.respond(HttpStatusCode.Created)
-                    } catch (exception: IllegalStateException) {
-                        call.respond(HttpStatusCode.BadRequest)
-                    }
-                }
-                route("/{tripId}") {
-                    post("/addStop") {
-                        val tripId = call.parameters["tripId"]?.toIntOrNull()
-                        val stopPlace = call.receive<StopPlace>()
-                        if (tripId == null) {
-                            call.respond(HttpStatusCode.BadRequest)
-                            return@post
-                        }
-                        log.debug("Adding trip stop: $tripId")
-                        try {
-                            tripsRepository.addStop(tripId, stopPlace)
-                            call.respond(HttpStatusCode.Created)
-                        } catch (exception: IllegalStateException) { //TODO zająć się poprawnym rzucaniem wyjątków
-                            call.respond(HttpStatusCode.BadRequest)
-                        }
-                    }
-                }
-                delete("/{tripName}") {
-                    val name = call.parameters["tripName"]
-                    if (name == null) {
-                        call.respond(HttpStatusCode.BadRequest)
-                        return@delete
-                    }
-                    if (tripsRepository.removeTrip(name)) {
-                        call.respond(HttpStatusCode.NoContent)
-                    } else {
-                        call.respond(HttpStatusCode.NotFound)
-                    }
-                }
-            }
-        }
         tripRoutes(tripsRepository)
 
         this.userRoutes(userRepository)
