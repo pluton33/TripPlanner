@@ -37,4 +37,6 @@ dependencies {
 
     implementation("com.h2database:h2:2.3.232")
     implementation("org.postgresql:postgresql:42.7.3")
+
+    implementation("io.ktor:ktor-server-auth:3.3.0")
 }

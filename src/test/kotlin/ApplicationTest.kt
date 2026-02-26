@@ -3,7 +3,8 @@ package com.sp
 import com.jayway.jsonpath.DocumentContext
 import com.jayway.jsonpath.JsonPath
 import com.sp.db.TripTable
-import com.sp.model.data.Trip
+import com.sp.trip.GetTripsResponse
+import com.sp.trip.Trip
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -55,7 +56,7 @@ class ApplicationTest {
                 json()
             }
         }
-        val trip = Trip("testowe miasto", "testowy opis")
+        val trip = Trip(name = "testowe miasto", description = "testowy opis")
         val response1 = client.post("/trips") {
             header(
                 key = HttpHeaders.ContentType,
@@ -69,7 +70,7 @@ class ApplicationTest {
         assertEquals(HttpStatusCode.OK, response2.status)
 
         val taskNames = response2
-            .body<List<Trip>>()
+            .body<GetTripsResponse>().trips
             .map { it.name }
 
         assertContains(taskNames, "testowe miasto")
@@ -93,7 +94,7 @@ class ApplicationTest {
             }
         }
 
-        val trip = Trip("testowe miasto", "testowy opis")
+        val trip = Trip(name = "testowe miasto", description =  "testowy opis")
         val response1 = client.post("/trips") {
             header(
                 HttpHeaders.ContentType,
@@ -109,7 +110,7 @@ class ApplicationTest {
         val response3 = client.get("/trips")
         assertEquals(HttpStatusCode.OK, response3.status)
         val taskNames = response3
-            .body<List<Trip>>()
+            .body<GetTripsResponse>().trips
             .map { it.name }
         assertFalse(taskNames.contains(trip.name))
     }

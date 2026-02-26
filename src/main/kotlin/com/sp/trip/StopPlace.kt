@@ -1,4 +1,4 @@
-package com.sp.model.data
+package com.sp.trip
 
 import kotlinx.serialization.Serializable
 
@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class StopPlace (
     val id: Int? = null,
     val name: String,
-    val description: String?
+    val description: String? = null,
 )
