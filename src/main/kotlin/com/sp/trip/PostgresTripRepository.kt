@@ -1,6 +1,7 @@
 package com.sp.trip
 
 import com.sp.db.StopPlaceDAO
+import com.sp.db.StopPlaceTable
 import com.sp.db.TripDAOToModel
 import com.sp.db.TripDAO
 import com.sp.db.TripTable
@@ -9,7 +10,9 @@ import com.sp.db.UserTable
 import com.sp.db.suspendTransaction
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.inSubQuery
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
+import org.jetbrains.exposed.v1.jdbc.select
 
 class PostgresTripRepository : TripRepository {
     override suspend fun allTrips(userId: Int): GetTripsResponse {
@@ -50,6 +53,15 @@ class PostgresTripRepository : TripRepository {
                 name = stopPlace.name
                 description = stopPlace.description
                 this.trip = trip
+            }
+        }
+    }
+
+    override suspend fun removeStop(userId: Int, stopId: Int) {
+        return suspendTransaction {
+            StopPlaceTable.deleteWhere {
+                (StopPlaceTable.id eq stopId) and
+                        (StopPlaceTable.tripId inSubQuery TripTable.select(TripTable.id).where { TripTable.userId eq userId })
             }
         }
     }

@@ -22,7 +22,7 @@ fun Route.tripRoutes(tripRepository: TripRepository) {
         route("/trips") {
             get() {
                 val principal = call.principal<UserIdPrincipal>()?.name?.toIntOrNull()
-                if(principal == null) {
+                if (principal == null) {
                     call.respond(HttpStatusCode.Unauthorized)
                     return@get
                 }
@@ -32,7 +32,7 @@ fun Route.tripRoutes(tripRepository: TripRepository) {
             post() {
                 val trip = call.receive<Trip>()
                 val principalId = call.principal<UserIdPrincipal>()?.name?.toIntOrNull()
-                if(principalId == null) {
+                if (principalId == null) {
                     return@post call.respond(HttpStatusCode.Unauthorized)
                 }
                 if (trip.name.isEmpty()) {
@@ -50,7 +50,7 @@ fun Route.tripRoutes(tripRepository: TripRepository) {
                 }
             }
             route("/{tripId}") {
-                post("/addStop") {
+                post("/stopPlace") {
                     val principalId = call.principal<UserIdPrincipal>()?.name?.toIntOrNull()
                     val tripId = call.parameters["tripId"]?.toIntOrNull()
                     val stopPlace = call.receive<StopPlace>()
@@ -73,11 +73,32 @@ fun Route.tripRoutes(tripRepository: TripRepository) {
                         println(exception.message.toString())
                     }
                 }
+                delete("stopPlace/{stopId}") {
+                    val principalId = call.principal<UserIdPrincipal>()?.name?.toIntOrNull()
+                    val stopId = call.parameters["stopId"]?.toIntOrNull()
+                    println("deleting stopId: ${ stopId }")
+                    if (stopId == null) {
+                        call.respond(HttpStatusCode.NotFound)
+                        return@delete
+                    }
+                    if (principalId == null) {
+                        call.respond(HttpStatusCode.Unauthorized)
+                        return@delete
+                    }
+                    try {
+                        tripRepository.removeStop(principalId, stopId)
+                        call.respond(HttpStatusCode.NoContent)
+                    } catch (e: IllegalArgumentException) {
+                        println(e.message)
+                        call.respond(HttpStatusCode.BadRequest)
+                    }
+
+                }
             }
             delete("/{tripName}") {
                 val tripId = call.parameters["tripName"]?.toIntOrNull()
                 val principalId = call.principal<UserIdPrincipal>()?.name?.toIntOrNull()
-                if(principalId == null) {
+                if (principalId == null) {
                     call.respond(HttpStatusCode.Unauthorized)
                     return@delete
                 }

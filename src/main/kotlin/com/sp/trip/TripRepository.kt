@@ -6,4 +6,5 @@ interface TripRepository {
     suspend fun addTrip(userId: Int, trip: Trip)
     suspend fun removeTrip(userId: Int, tripId: Int): Boolean
     suspend fun addStop(userId: Int, tripId: Int, stopPlace: StopPlace)
+    suspend fun removeStop(userId: Int, stopId: Int)
 }
