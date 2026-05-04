@@ -4,12 +4,15 @@ import com.sp.db.UserDAO
 import com.sp.db.UserTable
 import com.sp.db.suspendTransaction
 import com.sp.user.User
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.basic
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
@@ -33,6 +36,21 @@ fun Application.configureSecurity() {
                 }
             }
         }
+    }
+    //dostęp dla reacta
+    install(CORS) {
+        allowHost("localhost:5173")
+
+        allowMethod(HttpMethod.Options)
+        allowMethod(HttpMethod.Get)
+        allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Put)
+        allowMethod(HttpMethod.Delete)
+
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.Authorization)
+        //dostęp dla każdego
+        // anyHost()
     }
 
 

@@ -35,6 +35,9 @@ dependencies {
     implementation("org.flywaydb:flyway-core:10.12.0")
     implementation("org.flywaydb:flyway-database-postgresql:10.12.0")
 
+    //CORS
+    implementation("io.ktor:ktor-server-cors:3.0.0")
+
     implementation("com.h2database:h2:2.3.232")
     implementation("org.postgresql:postgresql:42.7.3")
 
